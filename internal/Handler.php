@@ -11,7 +11,7 @@ class Handler
 		'/games/{game_id}',
 		'/games/{game_id}/join',
 		'/games/{game_id}/leave',
-		'/games/{game_id}/make_move',
+		'/games/make_move',
 	];
 	private PDO $db;
 	private array $jsonBody;
@@ -66,7 +66,7 @@ class Handler
 				return $this->joinGame();
 			case '/games/{game_id}/leave':
 				return $this->leaveGame();
-			case '/games/{game_id}/make_moe':
+			case '/games/make_move':
 				return $this->makeMove();
 			default:
 				return $this->methodNotFoundResponce();
@@ -255,7 +255,7 @@ class Handler
 			return $this->methodNotFoundResponce();
 		}
 		$token = $this->jsonBody['token'] ?? '';
-		$game_id = $this->params['game_id'];
+		$player_id = $this->jsonBody['player_id'] ?? '';
 		$from_x = $this->jsonBody['from_x'] ?? '';
 		$from_y = $this->jsonBody['from_y'] ?? '';
 		$to_x = $this->jsonBody['to_x'] ?? '';
@@ -263,7 +263,7 @@ class Handler
 		$card_id = $this->jsonBody['card_id'] ?? '';
 		if (
 			empty($token)
-			|| empty($game_id)
+			|| empty($player_id)
 			|| empty($from_x)
 			|| empty($from_y)
 			|| empty($to_x)
@@ -277,7 +277,7 @@ class Handler
 		}
 		return $this->selectDBFunction('make_move', [
 			'token' => $token,
-			'game_id' => $game_id,
+			'player_id' => $player_id,
 			'from_x' => $from_x,
 			'from_y' => $from_y,
 			'to_x' => $to_x,
