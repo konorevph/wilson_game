@@ -6,6 +6,7 @@ class Handler
 		'/users/login',
 		'/users/register',
 		'/users/logout',
+		'/users/verify-token',
 		'/games',
 		'/games/create',
 		'/games/{game_id}',
@@ -56,6 +57,8 @@ class Handler
 				return $this->register();
 			case '/users/logout':
 				return $this->logout();
+			case '/users/verify-token':
+				return $this->verifyToken();
 			case '/games':
 				return $this->getGames();
 			case '/games/create':
@@ -130,6 +133,25 @@ class Handler
 			];
 		}
 		return $this->selectDBFunction('logout_user', [
+			'token' => $token,
+		]);
+	}
+
+	private function verifyToken(): array
+	{
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+		{
+			return $this->methodNotFoundResponce();
+		}
+		$token = $this->jsonBody['token'] ?? '';
+		if (empty($token))
+		{
+			return [
+				'status' => 'error',
+				'message' => 'Data is incorrect'
+			];
+		}
+		return $this->selectDBFunction('verify_token', [
 			'token' => $token,
 		]);
 	}
