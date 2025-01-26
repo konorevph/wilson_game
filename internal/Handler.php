@@ -151,7 +151,7 @@ class Handler
 				'message' => 'Data is incorrect'
 			];
 		}
-		return $this->selectDBFunction('verify_token', [
+		return $this->selectDBFunction('verify_token_web', [
 			'token' => $token,
 		]);
 	}
