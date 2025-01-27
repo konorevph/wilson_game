@@ -183,9 +183,9 @@ class Handler
 		}
 		$token = $this->jsonBody['token'] ?? '';
 		$is_private = isset($this->jsonBody['is_private']) 
-			? filter_var($this->jsonBody['is_private'], FILTER_VALIDATE_BOOLEAN) 
-			: null;
+			? $this->jsonBody['is_private'] : null;
 		$time = $this->jsonBody['time'] ?? '';
+		
 		if (empty($token) || $is_private === null || empty($time))
 		{
 			return [
