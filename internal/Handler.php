@@ -349,7 +349,11 @@ class Handler
 		$placeholders = implode(', ', array_map(fn($key) => ":$key", array_keys($params)));
 		$stmt = $this->db->prepare("SELECT $function($placeholders)");
 		foreach ($params as $key => $value) {
-			$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+			if (is_bool($value)) {
+				$stmt->bindValue(":$key", $value, PDO::PARAM_BOOL);
+			} else {
+				$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+			}
 		}
 		$stmt->execute();
 
