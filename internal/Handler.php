@@ -182,9 +182,11 @@ class Handler
 			return $this->methodNotFoundResponce();
 		}
 		$token = $this->jsonBody['token'] ?? '';
-		$is_private = $this->jsonBody['quantity'] ?? '';
+		$is_private = isset($this->jsonBody['is_private']) 
+			? filter_var($this->jsonBody['is_private'], FILTER_VALIDATE_BOOLEAN) 
+			: null;
 		$time = $this->jsonBody['time'] ?? '';
-		if (empty($token) || empty($is_private) || empty($time))
+		if (empty($token) || $is_private === null || empty($time))
 		{
 			return [
 				'status' => 'error',
@@ -227,7 +229,7 @@ class Handler
 		}
 		$game_id = $this->params['game_id'];
 		$token = $this->jsonBody['token'] ?? '';
-		$invite_code = $this->params['invite_code'];
+		$invite_code = $this->jsonBody['invite_code'] ?? '';
 		if (empty($game_id) || empty($token))
 		{
 			return [
