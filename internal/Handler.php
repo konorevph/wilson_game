@@ -351,6 +351,8 @@ class Handler
 		foreach ($params as $key => $value) {
 			if (is_bool($value)) {
 				$stmt->bindValue(":$key", $value, PDO::PARAM_BOOL);
+			} else if (is_int($value)) {
+				$stmt->bindValue(":$key", $value, PDO::PARAM_INT);
 			} else {
 				$stmt->bindValue(":$key", $value, PDO::PARAM_STR);
 			}
