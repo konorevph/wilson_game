@@ -8,11 +8,11 @@ class Handler
 		'/users/logout',
 		'/users/verify-token',
 		'/games',
+		'/games/make_move',
 		'/games/create',
 		'/games/{game_id}',
 		'/games/{game_id}/join',
 		'/games/{game_id}/leave',
-		'/games/make_move',
 	];
 	private PDO $db;
 	private array $jsonBody;
@@ -287,12 +287,12 @@ class Handler
 		$card_id = $this->jsonBody['card_id'] ?? '';
 		if (
 			empty($token)
-			|| empty($player_id)
-			|| empty($from_x)
-			|| empty($from_y)
-			|| empty($to_x)
-			|| empty($to_y)
-			|| empty($card_id)
+			|| !isset($player_id) || !is_numeric($player_id)
+			|| !isset($from_x) || !is_numeric($from_x)
+			|| !isset($from_y) || !is_numeric($from_y)
+			|| !isset($to_x) || !is_numeric($to_x)
+			|| !isset($to_y) || !is_numeric($to_y)
+			|| !isset($card_id) || !is_numeric($card_id)
 		) {
 			return [
 				'status' => 'error',
